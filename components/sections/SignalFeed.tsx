@@ -23,6 +23,11 @@ const SIGNALS = [
   { company: 'Amplitude',      signal: 'Clicked competitor comparison page', type: 'Web',   score: 86, icon: '🌐' },
 ]
 
+// Fixed legend bar widths (random values here caused a server/client hydration mismatch)
+const TYPE_SHARE: Record<string, number> = {
+  Funding: 82, Hiring: 74, Tech: 66, Intent: 70, Web: 58, Email: 46, Trigger: 52,
+}
+
 const TYPE_COLORS: Record<string, string> = {
   Funding: '#22C55E',
   Hiring:  '#3B82F6',
@@ -89,7 +94,7 @@ function RadarSweep({ active }: { active: boolean }) {
 function SignalCard({ sig, index }: { sig: typeof SIGNALS[0]; index: number }) {
   const color = TYPE_COLORS[sig.type] || '#3B82F6'
   return (
-    <div
+    <div data-reveal
       className="signal-card flex items-start gap-3 rounded-xl px-3 py-2.5"
       style={{
         background: 'rgba(255,255,255,0.035)',
@@ -130,19 +135,21 @@ export default function SignalFeed() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     if (!sectionRef.current) return
+    let interval: ReturnType<typeof setInterval> | undefined
+    const triggers: ScrollTrigger[] = []
 
     // Heading fade in
     if (headRef.current) {
       gsap.set(headRef.current, { opacity: 0, y: 28 })
-      ScrollTrigger.create({
+      triggers.push(ScrollTrigger.create({
         trigger: headRef.current,
         start: 'top 85%',
         onEnter: () => gsap.to(headRef.current, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }),
-      })
+      }))
     }
 
     // Activate radar + stagger cards on scroll
-    ScrollTrigger.create({
+    triggers.push(ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top 60%',
       onEnter: () => {
@@ -159,13 +166,20 @@ export default function SignalFeed() {
 
         // Count up
         let n = 0
-        const interval = setInterval(() => {
+        clearInterval(interval)
+        interval = setInterval(() => {
           n += Math.floor(Math.random() * 3) + 1
           if (n >= 247) { setCount(247); clearInterval(interval) }
           else setCount(n)
         }, 30)
       },
-    })
+      once: true,
+    }))
+
+    return () => {
+      clearInterval(interval)
+      triggers.forEach((t) => t.kill())
+    }
   }, [])
 
   const displayed = SIGNALS.slice(0, 10)
@@ -182,7 +196,7 @@ export default function SignalFeed() {
     >
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
-        <div ref={headRef} className="text-center mb-16" style={{ opacity: 0 }}>
+        <div data-reveal ref={headRef} className="text-center mb-16" style={{ opacity: 0 }}>
           <span className="section-label">Signal Intelligence</span>
           <h2 className="text-4xl md:text-[48px] font-semibold leading-tight" style={{ color: '#F8FAFC' }}>
             We See Who's Ready{' '}
@@ -251,7 +265,7 @@ export default function SignalFeed() {
                     <div className="w-16 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
                       <div
                         className="h-full rounded-full"
-                        style={{ width: (Math.random() * 50 + 40) + '%', background: color, opacity: 0.7 }}
+                        style={{ width: TYPE_SHARE[type] + '%', background: color, opacity: 0.7 }}
                       />
                     </div>
                   </div>

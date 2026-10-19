@@ -82,7 +82,7 @@ export default function Founder() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
 
           {/* Photo */}
-          <div ref={photoRef} className="flex flex-col items-center lg:items-start" style={{ opacity: 0 }}>
+          <div data-reveal ref={photoRef} className="flex flex-col items-center lg:items-start" style={{ opacity: 0 }}>
             <div className="relative">
               {/* Glow behind photo */}
               <div className="absolute -inset-4 rounded-3xl" style={{ background: 'radial-gradient(ellipse at center, rgba(59,130,246,0.18) 0%, transparent 70%)', filter: 'blur(20px)' }} />
@@ -101,7 +101,6 @@ export default function Founder() {
                   fill
                   sizes="(max-width: 640px) calc(100vw - 80px), 320px"
                   style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                  priority
                 />
                 {/* Subtle gradient overlay at bottom */}
                 <div className="absolute bottom-0 left-0 right-0 h-24" style={{ background: 'linear-gradient(to top, rgba(8,12,20,0.7), transparent)' }} />
@@ -149,7 +148,7 @@ export default function Founder() {
           </div>
 
           {/* Quote + content */}
-          <div ref={contentRef} style={{ opacity: 0 }}>
+          <div data-reveal ref={contentRef} style={{ opacity: 0 }}>
             {/* Big quote mark */}
             <div className="text-8xl font-black leading-none mb-2 select-none" style={{ color: 'rgba(59,130,246,0.15)', fontFamily: 'Georgia, serif', lineHeight: 0.8 }}>
               &ldquo;
@@ -182,7 +181,7 @@ export default function Founder() {
               ].map(({ v, l }) => (
                 <div key={l}>
                   <p className="text-xl font-black" style={{ color: '#3B82F6' }}>{v}</p>
-                  <p className="text-xs" style={{ color: '#334155' }}>{l}</p>
+                  <p className="text-xs" style={{ color: '#64748B' }}>{l}</p>
                 </div>
               ))}
             </div>
@@ -202,7 +201,7 @@ export default function Founder() {
         {/* Vision points */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {VISION_POINTS.map((pt, i) => (
-            <div
+            <div data-reveal
               key={pt.title}
               ref={(el) => { pointRefs.current[i] = el }}
               className="rounded-xl p-6"

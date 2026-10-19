@@ -46,6 +46,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/logo-blue.png" type="image/png" />
+        <link rel="icon" href="/logo-blue.png" sizes="32x32" type="image/png" />
+        <link rel="icon" href="/logo-blue.png" sizes="192x192" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo-blue.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -58,11 +62,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           '@type': 'Organization',
           name: 'Sigflow GTM',
           url: BASE_URL,
-          logo: BASE_URL + '/icon.png',
-          email: 'hello@sigflowgtm.com',
+          logo: BASE_URL + '/logo-blue.png',
+          email: 'ceo@sigflowgtm.com',
           address: { '@type': 'PostalAddress', addressLocality: 'Dubai', addressCountry: 'AE' },
-          contactPoint: { '@type': 'ContactPoint', email: 'hello@sigflowgtm.com', contactType: 'customer service', availableLanguage: 'English' },
-          sameAs: [],
+          contactPoint: { '@type': 'ContactPoint', email: 'ceo@sigflowgtm.com', contactType: 'customer service', availableLanguage: 'English' },
+          sameAs: ['https://www.linkedin.com/company/sigflow-gtm/', 'https://x.com/SigFlowGTM'],
         }) }} />
 
         {/* JSON-LD: WebSite with SearchAction */}

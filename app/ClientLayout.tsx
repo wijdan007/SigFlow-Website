@@ -2,13 +2,18 @@
 
 import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import { usePathname } from 'next/navigation'
 import CustomCursor from '@/components/ui/CustomCursor'
 
 const ChatWidget  = dynamic(() => import('@/components/ui/ChatWidget'),  { ssr: false })
 const MobileCTA   = dynamic(() => import('@/components/ui/MobileCTA'),   { ssr: false })
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
+  // The Sanity Studio is a full app of its own: no site chrome or smooth scrolling there
+  const isStudio = usePathname()?.startsWith('/studio') ?? false
+
   useEffect(() => {
+    if (isStudio) return
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const initScroll = async () => {
@@ -37,15 +42,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       return lenis
     }
 
+    let cancelled = false
     let lenisInstance: import('lenis').default | null = null
     initScroll().then((l) => {
       lenisInstance = l ?? null
+      if (cancelled) lenisInstance?.destroy()
     })
 
     return () => {
+      cancelled = true
       lenisInstance?.destroy()
     }
-  }, [])
+  }, [isStudio])
+
+  if (isStudio) return <>{children}</>
 
   return (
     <>

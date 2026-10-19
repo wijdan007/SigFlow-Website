@@ -55,23 +55,27 @@ function FAQItem({ q, a, open, toggle }: { q: string; a: string; open: boolean; 
 
   return (
     <div
-      className="rounded-xl overflow-hidden cursor-pointer"
+      className="rounded-xl overflow-hidden"
       style={{
         border: '1px solid ' + (open ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.07)'),
         background: open ? 'rgba(59,130,246,0.04)' : 'rgba(255,255,255,0.02)',
         transition: 'border-color 0.2s, background 0.2s',
       }}
-      onClick={toggle}
     >
-      <div className="flex items-start justify-between gap-4 px-6 py-5">
+      <button
+        type="button"
+        onClick={toggle}
+        aria-expanded={open}
+        className="w-full flex items-start justify-between gap-4 px-6 py-5 text-left cursor-pointer"
+      >
         <h3 className="text-white font-semibold text-base leading-snug">{q}</h3>
         <div
           className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
           style={{ background: open ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.05)', marginTop: 2 }}
         >
-          {open ? <Minus size={13} style={{ color: '#3B82F6' }} /> : <Plus size={13} style={{ color: '#475569' }} />}
+          {open ? <Minus size={13} style={{ color: '#3B82F6' }} /> : <Plus size={13} style={{ color: '#94A3B8' }} />}
         </div>
-      </div>
+      </button>
       <div ref={bodyRef} style={{ height: 0, overflow: 'hidden', opacity: 0 }}>
         <p className="px-6 pb-5 text-sm leading-relaxed" style={{ color: '#94A3B8' }}>{a}</p>
       </div>
@@ -122,7 +126,7 @@ export default function FAQ() {
       />
 
       <div className="max-w-3xl mx-auto">
-        <div ref={headRef} className="text-center mb-14" style={{ opacity: 0 }}>
+        <div data-reveal ref={headRef} className="text-center mb-14" style={{ opacity: 0 }}>
           <span className="section-label">FAQ</span>
           <h2 className="text-4xl md:text-[48px] font-semibold leading-tight" style={{ color: '#F8FAFC' }}>
             Questions We{' '}

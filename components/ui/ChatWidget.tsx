@@ -16,11 +16,19 @@ export default function ChatWidget() {
   const [listening, setListening] = useState(false)
   const [voiceOn, setVoiceOn]     = useState(false)
   const [pulse, setPulse]         = useState(true)
-  const [noKey, setNoKey]         = useState(false)
+  // On mobile, lift the button once the bottom "Book a call" bar slides in (same 400px threshold as MobileCTA)
+  const [raised, setRaised]       = useState(false)
 
   const bottomRef      = useRef<HTMLDivElement>(null)
   const inputRef       = useRef<HTMLTextAreaElement>(null)
   const recognitionRef = useRef<any>(null)
+
+  useEffect(() => {
+    const onScroll = () => setRaised(window.scrollY > 400)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     const t = setTimeout(() => setPulse(false), 8000)
@@ -42,7 +50,6 @@ export default function ChatWidget() {
     setMessages(history)
     setInput('')
     setThinking(true)
-    setNoKey(false)
 
     try {
       const res = await fetch('/api/chat', {
@@ -51,10 +58,8 @@ export default function ChatWidget() {
         body: JSON.stringify({ messages: history }),
       })
       const data = await res.json()
-      if (data.error) {
-        const isKeyError = data.error.includes('GROQ_API_KEY') || res.status === 500
-        if (isKeyError) setNoKey(true)
-        setMessages(prev => [...prev, { role: 'assistant', content: isKeyError ? '⚠️ API key not configured — see setup below.' : 'Something went wrong. Try again.' }])
+      if (!res.ok || data.error) {
+        setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting right now. Try again in a moment, or book a call and we'll talk directly." }])
       } else {
         const reply: Message = { role: 'assistant', content: data.text }
         setMessages(prev => [...prev, reply])
@@ -100,7 +105,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-[9999]" style={{ pointerEvents: 'auto' }}>
+      <div className={'fixed right-4 md:bottom-6 md:right-6 z-[9999] transition-[bottom] duration-300 ' + (raised ? 'bottom-28' : 'bottom-6')} style={{ pointerEvents: 'auto' }}>
         {!open && (
           <div className="relative">
             {pulse && <span className="absolute inset-0 rounded-full animate-ping" style={{ background: 'rgba(59,130,246,0.45)', animationDuration: '1.5s' }} />}
@@ -112,14 +117,14 @@ export default function ChatWidget() {
             >
               <Bot size={24} color="white" />
             </button>
-            <div className="absolute -top-10 right-0 whitespace-nowrap text-xs font-semibold px-3 py-1.5 rounded-full pointer-events-none" style={{ background: 'rgba(10,14,26,0.92)', color: '#F8FAFC', border: '1px solid rgba(59,130,246,0.35)', backdropFilter: 'blur(10px)' }}>
+            <div className="hidden md:block absolute -top-10 right-0 whitespace-nowrap text-xs font-semibold px-3 py-1.5 rounded-full pointer-events-none" style={{ background: 'rgba(10,14,26,0.92)', color: '#F8FAFC', border: '1px solid rgba(59,130,246,0.35)', backdropFilter: 'blur(10px)' }}>
               Ask Sig — GTM AI
             </div>
           </div>
         )}
 
         {open && (
-          <div className="flex flex-col rounded-2xl overflow-hidden" style={{ width: 'min(380px, calc(100vw - 24px))', height: 'min(560px, calc(100dvh - 100px))', background: 'rgba(8,10,18,0.97)', border: '1px solid rgba(59,130,246,0.22)', backdropFilter: 'blur(24px)', boxShadow: '0 0 70px rgba(59,130,246,0.12), 0 24px 60px rgba(0,0,0,0.7)' }}>
+          <div className="flex flex-col rounded-2xl overflow-hidden" style={{ width: 'min(380px, calc(100vw - 24px))', height: 'min(560px, calc(100dvh - 160px))', background: 'rgba(8,10,18,0.97)', border: '1px solid rgba(59,130,246,0.22)', backdropFilter: 'blur(24px)', boxShadow: '0 0 70px rgba(59,130,246,0.12), 0 24px 60px rgba(0,0,0,0.7)' }}>
 
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(59,130,246,0.07)' }}>
@@ -129,15 +134,15 @@ export default function ChatWidget() {
                   <p className="text-white font-semibold text-sm leading-none">Sig</p>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full" style={{ background: thinking ? '#F59E0B' : '#22C55E', animation: thinking ? 'pulse 1s infinite' : 'none' }} />
-                    <p className="text-[10px]" style={{ color: '#94A3B8' }}>GTM Strategist · Powered by Llama 3.3</p>
+                    <p className="text-[10px]" style={{ color: '#94A3B8' }}>GTM Strategist · AI assistant</p>
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => setVoiceOn(v => !v)} className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: voiceOn ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.05)', color: voiceOn ? '#3B82F6' : '#475569' }} title="Toggle voice output">
+                <button onClick={() => setVoiceOn(v => !v)} className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: voiceOn ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.05)', color: voiceOn ? '#3B82F6' : '#475569' }} title="Toggle voice output" aria-label="Toggle voice output">
                   {voiceOn ? <Volume2 size={13} /> : <VolumeX size={13} />}
                 </button>
-                <button onClick={() => setOpen(false)} className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10" style={{ color: '#475569' }}>
+                <button onClick={() => setOpen(false)} className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10" style={{ color: '#94A3B8' }} aria-label="Close chat">
                   <X size={14} />
                 </button>
               </div>
@@ -173,15 +178,6 @@ export default function ChatWidget() {
                 </div>
               )}
 
-              {/* API key setup banner */}
-              {noKey && (
-                <div className="rounded-xl p-3 text-xs" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: '#FCA5A5' }}>
-                  <p className="font-semibold mb-1">Quick setup needed</p>
-                  <p style={{ color: '#94A3B8' }}>Get a free API key at <span style={{ color: '#60A5FA' }}>console.groq.com</span> (no card required), then add it to <code style={{ color: '#A5F3FC' }}>.env.local</code>:</p>
-                  <code className="block mt-1.5 px-2 py-1 rounded text-[11px]" style={{ background: 'rgba(0,0,0,0.4)', color: '#A5F3FC' }}>GROQ_API_KEY=gsk_...</code>
-                </div>
-              )}
-
               <div ref={bottomRef} />
             </div>
 
@@ -206,16 +202,16 @@ export default function ChatWidget() {
                   style={{ color: '#F8FAFC', maxHeight: '80px', lineHeight: '1.5', paddingTop: '2px' }}
                 />
                 <div className="flex items-center gap-1.5 flex-shrink-0">
-                  <button onClick={toggleVoice} disabled={thinking} className="w-7 h-7 rounded-lg flex items-center justify-center disabled:opacity-30" style={{ background: listening ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.05)', color: listening ? '#EF4444' : '#475569' }}>
+                  <button onClick={toggleVoice} disabled={thinking} aria-label="Voice input" className="w-7 h-7 rounded-lg flex items-center justify-center disabled:opacity-30" style={{ background: listening ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.05)', color: listening ? '#EF4444' : '#475569' }}>
                     {listening ? <MicOff size={14} /> : <Mic size={14} />}
                   </button>
-                  <button onClick={() => send(input)} disabled={!input.trim() || thinking} className="w-7 h-7 rounded-lg flex items-center justify-center disabled:opacity-30" style={{ background: 'linear-gradient(135deg,#3B82F6,#06B6D4)', color: 'white' }}>
+                  <button onClick={() => send(input)} disabled={!input.trim() || thinking} aria-label="Send message" className="w-7 h-7 rounded-lg flex items-center justify-center disabled:opacity-30" style={{ background: 'linear-gradient(135deg,#3B82F6,#06B6D4)', color: 'white' }}>
                     <Send size={13} />
                   </button>
                 </div>
               </div>
-              <p className="text-center text-[10px] mt-2" style={{ color: '#1E293B' }}>
-                Sig by Sigflow GTM · <a href={CALENDLY} target="_blank" rel="noopener noreferrer" style={{ color: '#334155' }}>Book a call</a>
+              <p className="text-center text-[10px] mt-2" style={{ color: '#475569' }}>
+                Sig by Sigflow GTM · <a href={CALENDLY} target="_blank" rel="noopener noreferrer" style={{ color: '#94A3B8' }}>Book a call</a>
               </p>
             </div>
           </div>

@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Navbar from '@/components/ui/Navbar'
+import Footer from '@/components/sections/Footer'
 
 const caseStudies = [
   {
@@ -156,7 +158,7 @@ function CaseCard({ cs, index }: { cs: typeof caseStudies[0]; index: number }) {
   }, [index])
 
   return (
-    <div
+    <div data-reveal
       ref={cardRef}
       className="rounded-2xl overflow-hidden"
       style={{
@@ -233,8 +235,10 @@ export default function CaseStudiesContent() {
   }, [])
 
   return (
+    <>
+    <Navbar />
     <main
-      className="min-h-screen px-6 py-24"
+      className="min-h-screen px-6 pt-32 pb-24"
       style={{
         background: '#0A0A0A',
         backgroundImage:
@@ -254,7 +258,7 @@ export default function CaseStudiesContent() {
         </nav>
 
         {/* Hero */}
-        <div ref={headRef} className="mb-16" style={{ opacity: 0 }}>
+        <div data-reveal ref={headRef} className="mb-16" style={{ opacity: 0 }}>
           <span
             className="text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full inline-block mb-6"
             style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6', border: '1px solid rgba(59,130,246,0.2)' }}
@@ -313,5 +317,7 @@ export default function CaseStudiesContent() {
         </div>
       </div>
     </main>
+    <Footer />
+    </>
   )
 }

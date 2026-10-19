@@ -156,7 +156,7 @@ export default function WhatWeDo() {
   return (
     <section id="services" className="py-28 px-6" style={{ background: '#0A0A0A', backgroundImage: 'radial-gradient(circle at 8% 15%, rgba(59,130,246,0.28) 0%, transparent 40%), radial-gradient(circle at 90% 85%, rgba(6,182,212,0.22) 0%, transparent 38%), radial-gradient(circle at 52% 55%, rgba(139,92,246,0.14) 0%, transparent 36%)' }}>
       <div className="max-w-7xl mx-auto">
-        <div ref={headingRef} className="text-center mb-16" style={{ opacity: 0 }}>
+        <div data-reveal ref={headingRef} className="text-center mb-16" style={{ opacity: 0 }}>
           <span className="section-label">Our Services</span>
           <h2
             className="text-4xl md:text-[48px] font-semibold leading-tight"

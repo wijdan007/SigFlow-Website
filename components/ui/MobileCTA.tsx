@@ -15,7 +15,7 @@ export default function MobileCTA() {
   return (
     <div
       className="fixed bottom-0 left-0 right-0 z-[9998] md:hidden transition-transform duration-300"
-      style={{ transform: visible ? 'translateY(0)' : 'translateY(100%' }}
+      style={{ transform: visible ? 'translateY(0)' : 'translateY(100%)' }}
     >
       <div
         className="px-4 py-3"
@@ -39,7 +39,7 @@ export default function MobileCTA() {
           <Calendar size={16} />
           Book a Free Strategy Call
         </a>
-        <p className="text-center text-[10px] mt-1.5" style={{ color: '#334155' }}>
+        <p className="text-center text-[10px] mt-1.5" style={{ color: '#64748B' }}>
           We respond within 24 hours ⚡
         </p>
       </div>

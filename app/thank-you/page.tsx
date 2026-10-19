@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'You\'re Booked | Sigflow GTM',
   description: 'Your strategy call is confirmed. We\'ll see you soon.',
+  robots: { index: false, follow: true },
 }
 
 export default function ThankYou() {

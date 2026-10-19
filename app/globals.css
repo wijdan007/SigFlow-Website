@@ -144,4 +144,9 @@ section {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  /* Content that normally fades in on scroll must be visible when animations are off */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

@@ -198,7 +198,7 @@ export default function Results() {
   return (
     <section id="results" className="py-28 px-6" style={{ background: '#0A0A0A', backgroundImage: 'radial-gradient(circle at 90% 10%, rgba(59,130,246,0.26) 0%, transparent 40%), radial-gradient(circle at 5% 90%, rgba(6,182,212,0.20) 0%, transparent 38%), radial-gradient(circle at 48% 50%, rgba(139,92,246,0.12) 0%, transparent 36%)' }}>
       <div className="max-w-7xl mx-auto">
-        <div ref={headingRef} className="text-center mb-20" style={{ opacity: 0 }}>
+        <div data-reveal ref={headingRef} className="text-center mb-20" style={{ opacity: 0 }}>
           <span className="section-label">By the Numbers</span>
           <h2
             className="text-4xl md:text-[48px] font-semibold leading-tight"

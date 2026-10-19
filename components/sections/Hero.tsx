@@ -158,7 +158,7 @@ export default function Hero() {
             className="text-5xl md:text-[72px] font-extrabold uppercase leading-[1.05] tracking-tight mb-7"
             style={{ color: '#F8FAFC', overflow: 'hidden' }}
           >
-            <span
+            <span data-reveal
               ref={line1Ref}
               className="block"
               style={{ opacity: 0 }}
@@ -174,7 +174,7 @@ export default function Hero() {
                 Broken GTM.
               </span>
             </span>
-            <span
+            <span data-reveal
               ref={line2Ref}
               className="block"
               style={{ opacity: 0 }}
@@ -185,7 +185,7 @@ export default function Hero() {
           </h1>
 
           {/* Sub */}
-          <p
+          <p data-reveal
             ref={subRef}
             className="text-lg md:text-xl leading-[1.75] mb-11 max-w-xl"
             style={{ color: '#94A3B8', opacity: 0 }}
@@ -197,7 +197,7 @@ export default function Hero() {
 
           {/* Buttons */}
           <div ref={btnsRef} className="flex flex-col sm:flex-row flex-wrap gap-4">
-            <a
+            <a data-reveal
               href="https://calendly.com/book-strategycall-sigflow-wijdan"
               target="_blank"
               rel="noopener noreferrer"
@@ -207,7 +207,7 @@ export default function Hero() {
             >
               Book a Free Call
             </a>
-            <button
+            <button data-reveal
               className="btn-ghost"
               data-magnetic
               style={{ opacity: 0 }}
@@ -228,7 +228,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll hint */}
-      <div
+      <div data-reveal
         ref={scrollHintRef}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         style={{ opacity: 0 }}

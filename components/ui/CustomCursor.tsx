@@ -168,39 +168,42 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Trail dots */}
-      <div ref={t3Ref} style={{ ...base, zIndex: 99995, width: 5, height: 5, borderRadius: '50%', background: 'rgba(6,182,212,0.25)', filter: 'blur(1px)' }} />
-      <div ref={t2Ref} style={{ ...base, zIndex: 99996, width: 6, height: 6, borderRadius: '50%', background: 'rgba(59,130,246,0.35)', filter: 'blur(0.5px)' }} />
-      <div ref={t1Ref} style={{ ...base, zIndex: 99997, width: 7, height: 7, borderRadius: '50%', background: 'rgba(59,130,246,0.55)' }} />
+      <style>{`@media (pointer: coarse), (hover: none) { .cc-root { display: none !important; } }`}</style>
+      <div className="cc-root">
+        {/* Trail dots */}
+        <div ref={t3Ref} style={{ ...base, zIndex: 99995, width: 5, height: 5, borderRadius: '50%', background: 'rgba(6,182,212,0.25)', filter: 'blur(1px)' }} />
+        <div ref={t2Ref} style={{ ...base, zIndex: 99996, width: 6, height: 6, borderRadius: '50%', background: 'rgba(59,130,246,0.35)', filter: 'blur(0.5px)' }} />
+        <div ref={t1Ref} style={{ ...base, zIndex: 99997, width: 7, height: 7, borderRadius: '50%', background: 'rgba(59,130,246,0.55)' }} />
 
-      {/* Ring */}
-      <div
-        ref={ringRef}
-        style={{
-          ...base,
-          zIndex: 99998,
-          width: 36, height: 36,
-          borderRadius: '50%',
-          border: '1.5px solid rgba(59,130,246,0.5)',
-          boxShadow: '0 0 10px rgba(59,130,246,0.2), 0 0 3px rgba(59,130,246,0.15)',
-          transition: 'width 0.22s ease, height 0.22s ease, border-color 0.22s, box-shadow 0.22s',
-          background: 'transparent',
-        }}
-      />
+        {/* Ring */}
+        <div
+          ref={ringRef}
+          style={{
+            ...base,
+            zIndex: 99998,
+            width: 36, height: 36,
+            borderRadius: '50%',
+            border: '1.5px solid rgba(59,130,246,0.5)',
+            boxShadow: '0 0 10px rgba(59,130,246,0.2), 0 0 3px rgba(59,130,246,0.15)',
+            transition: 'width 0.22s ease, height 0.22s ease, border-color 0.22s, box-shadow 0.22s',
+            background: 'transparent',
+          }}
+        />
 
-      {/* Dot */}
-      <div
-        ref={dotRef}
-        style={{
-          ...base,
-          zIndex: 99999,
-          width: 8, height: 8,
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #3B82F6, #06B6D4)',
-          boxShadow: '0 0 10px rgba(59,130,246,0.8), 0 0 20px rgba(6,182,212,0.4)',
-          transition: 'box-shadow 0.2s',
-        }}
-      />
+        {/* Dot */}
+        <div
+          ref={dotRef}
+          style={{
+            ...base,
+            zIndex: 99999,
+            width: 8, height: 8,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #3B82F6, #06B6D4)',
+            boxShadow: '0 0 10px rgba(59,130,246,0.8), 0 0 20px rgba(6,182,212,0.4)',
+            transition: 'box-shadow 0.2s',
+          }}
+        />
+      </div>
     </>
   )
 }

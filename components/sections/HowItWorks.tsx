@@ -154,7 +154,7 @@ export default function HowItWorks() {
             {steps.map((step, i) => (
               <div key={step.number} className="step-row flex items-start gap-8 relative">
                 {/* Glowing dot */}
-                <div
+                <div data-reveal
                   className="step-dot flex-shrink-0 relative"
                   style={{
                     width: '56px',
@@ -179,7 +179,7 @@ export default function HowItWorks() {
                 </div>
 
                 {/* Content */}
-                <div
+                <div data-reveal
                   className="step-content flex-1"
                   style={{ opacity: 0 }}
                 >

@@ -25,6 +25,7 @@ export default function Navbar() {
     setMobileOpen(false)
     const el = document.querySelector(href)
     if (el) el.scrollIntoView({ behavior: 'smooth' })
+    else window.location.href = '/' + href
   }
 
   return (
@@ -36,7 +37,8 @@ export default function Navbar() {
         <GlassPanel
           cornerRadius={0}
           blurAmount={18}
-          style={{ width: '100%' }}
+          // Solid enough to stay readable over light sections (e.g. the tool grid)
+          style={{ width: '100%', background: 'rgba(10,10,10,0.82)', borderLeft: 'none', borderRight: 'none', borderTop: 'none' }}
           className="w-full"
         >
           <div className="max-w-7xl mx-auto px-6 flex items-center justify-between py-2">
@@ -92,23 +94,18 @@ function NavContent({
   return (
     <>
       {/* Logo */}
-      <a href="#" className="flex items-center gap-2.5 group">
-        <div
-          className="flex items-center justify-center rounded-[10px] flex-shrink-0"
+      <a href="/" className="flex items-center gap-2.5 group">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/logo-blue.png"
+          alt="Sigflow GTM"
+          width={36}
+          height={36}
           style={{
-            width: 34, height: 34,
-            background: 'linear-gradient(135deg, #2563EB, #0891B2)',
-            boxShadow: '0 4px 14px rgba(59,130,246,0.35)',
+            borderRadius: 8,
+            flexShrink: 0,
           }}
-        >
-          <svg width="20" height="20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="24" cy="68" r="7" fill="white"/>
-            <circle cx="50" cy="50" r="5.5" fill="rgba(255,255,255,0.7)"/>
-            <circle cx="76" cy="32" r="7" fill="white"/>
-            <path d="M24 68 Q37 59 50 50 Q63 41 76 32" stroke="white" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            <path d="M76 32 L69 27 M76 32 L71 39" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-          </svg>
-        </div>
+        />
         <span className="text-xl font-bold tracking-tight">
           <span className="text-white">Sigflow</span>
           <span className="text-[#3B82F6]"> GTM</span>
@@ -141,6 +138,7 @@ function NavContent({
         className="md:hidden text-white p-2"
         onClick={() => setMobileOpen(!mobileOpen)}
         aria-label="Toggle menu"
+        aria-expanded={mobileOpen}
       >
         {mobileOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
