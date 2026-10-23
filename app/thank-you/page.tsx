@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'You\'re Booked | Sigflow GTM',
+  title: 'You\'re Booked',
   description: 'Your strategy call is confirmed. We\'ll see you soon.',
   robots: { index: false, follow: true },
 }

@@ -201,14 +201,14 @@ export default function Hero() {
               href="https://calendly.com/book-strategycall-sigflow-wijdan"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-glow"
+              className="btn-glow w-full sm:w-auto"
               data-magnetic
               style={{ opacity: 0 }}
             >
               Book a Free Call
             </a>
             <button data-reveal
-              className="btn-ghost"
+              className="btn-ghost w-full sm:w-auto"
               data-magnetic
               style={{ opacity: 0 }}
               onClick={() => scrollTo('#how-it-works')}

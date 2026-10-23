@@ -27,15 +27,23 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!isSanityConfigured) return {}
   const post: Post | null = await client.fetch(postBySlugQuery, { slug: params.slug })
   if (!post) return {}
+  const url = `https://sigflowgtm.com/blog/${params.slug}`
+  // Without a cover image, fall back to the site-wide share image
+  const images = post.mainImage?.asset?.url ? [post.mainImage.asset.url] : undefined
   return {
-    title: `${post.title} | Sigflow GTM Blog`,
+    title: post.title,
     description: post.excerpt,
-    alternates: { canonical: `https://sigflowgtm.com/blog/${params.slug}` },
+    alternates: { canonical: url },
     openGraph: {
+      type: 'article',
       title: post.title,
       description: post.excerpt,
-      images: post.mainImage?.asset?.url ? [post.mainImage.asset.url] : [],
+      url,
+      publishedTime: post.publishedAt,
+      images: images ?? ['/opengraph-image'],
     },
+    // Only override when there's a cover image; otherwise keep the inherited site twitter-image
+    ...(images && { twitter: { card: 'summary_large_image', images } }),
   }
 }
 
@@ -48,8 +56,26 @@ export default async function PostPage({ params }: { params: { slug: string } })
   )
   if (!post) notFound()
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.publishedAt,
+    image: post.mainImage?.asset?.url,
+    url: `https://sigflowgtm.com/blog/${params.slug}`,
+    mainEntityOfPage: `https://sigflowgtm.com/blog/${params.slug}`,
+    author: { '@type': 'Organization', name: 'Sigflow GTM', url: 'https://sigflowgtm.com' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Sigflow GTM',
+      logo: { '@type': 'ImageObject', url: 'https://sigflowgtm.com/icon-512.png' },
+    },
+  }
+
   return (
     <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
     <Navbar />
     <main className="min-h-screen pt-32 pb-28 px-6" style={{ background: '#0A0A0A' }}>
       <div className="max-w-2xl mx-auto">
@@ -116,7 +142,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             href="https://calendly.com/book-strategycall-sigflow-wijdan"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-glow inline-block px-7 py-3"
+            className="btn-glow px-7 py-3 w-full sm:w-auto"
           >
             Book a Free Call
           </a>

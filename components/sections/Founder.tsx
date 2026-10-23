@@ -190,7 +190,7 @@ export default function Founder() {
               href="https://calendly.com/book-strategycall-sigflow-wijdan"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-glow inline-block text-sm px-7 py-3"
+              className="btn-glow text-sm px-7 py-3 w-full sm:w-auto"
               style={{ textDecoration: 'none' }}
             >
               Talk to Wijdan Directly

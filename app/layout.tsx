@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import ClientLayout from './ClientLayout'
 import './globals.css'
 
@@ -26,10 +26,10 @@ export const metadata: Metadata = {
     description: 'We build outbound systems using 40+ buying signals to fill your B2B pipeline with qualified meetings — results in 20-30 days.',
     locale: 'en_US',
   },
+  // Title/description deliberately omitted: X falls back to each page's og:title/og:description.
+  // Pages must not override `twitter`, or they lose the inherited twitter-image.
   twitter: {
     card: 'summary_large_image',
-    title: 'Sigflow GTM – Signal-Driven Go-To-Market',
-    description: 'We build outbound systems using 40+ buying signals to fill your B2B pipeline with qualified meetings — results in 20-30 days.',
     creator: '@sigflowgtm',
   },
   robots: {
@@ -37,19 +37,22 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
   },
-  alternates: {
-    canonical: BASE_URL,
-  },
+  // Canonical URLs are set per page; a root-level one would leak the homepage URL into every page
+  // Optional: set GOOGLE_SITE_VERIFICATION to the Search Console HTML-tag token
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
+}
+
+export const viewport: Viewport = {
+  themeColor: '#0A0A0A',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/logo-blue.png" type="image/png" />
-        <link rel="icon" href="/logo-blue.png" sizes="32x32" type="image/png" />
-        <link rel="icon" href="/logo-blue.png" sizes="192x192" type="image/png" />
-        <link rel="apple-touch-icon" href="/logo-blue.png" />
+        {/* Favicons come from app/favicon.ico, app/icon.png and app/apple-icon.png */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -62,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           '@type': 'Organization',
           name: 'Sigflow GTM',
           url: BASE_URL,
-          logo: BASE_URL + '/logo-blue.png',
+          logo: BASE_URL + '/icon-512.png',
           email: 'ceo@sigflowgtm.com',
           address: { '@type': 'PostalAddress', addressLocality: 'Dubai', addressCountry: 'AE' },
           contactPoint: { '@type': 'ContactPoint', email: 'ceo@sigflowgtm.com', contactType: 'customer service', availableLanguage: 'English' },

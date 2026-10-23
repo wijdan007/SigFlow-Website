@@ -6,9 +6,16 @@ import Navbar from '@/components/ui/Navbar'
 import Footer from '@/components/sections/Footer'
 
 export const metadata: Metadata = {
-  title: 'Blog | Sigflow GTM',
+  title: 'Blog',
   description: 'GTM insights, outbound strategy, and signal-based growth from the Sigflow team.',
   alternates: { canonical: 'https://sigflowgtm.com/blog' },
+  openGraph: {
+    title: 'The Sigflow Blog',
+    description: 'GTM insights, outbound strategy, and signal-based growth from the Sigflow team.',
+    url: 'https://sigflowgtm.com/blog',
+    // Overriding openGraph in a child route drops the inherited image, so point at it explicitly
+    images: ['/opengraph-image'],
+  },
 }
 
 interface Post {

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Page Not Found | Sigflow GTM',
+  title: 'Page Not Found',
   description: 'The page you were looking for does not exist.',
 }
 
@@ -39,8 +39,7 @@ export default function NotFound() {
       <div className="flex flex-col sm:flex-row gap-4">
         <Link
           href="/"
-          className="btn-glow px-8 py-3 text-sm font-semibold"
-          style={{ display: 'inline-block', textDecoration: 'none' }}
+          className="btn-glow px-8 py-3 text-sm font-semibold w-full sm:w-auto"
         >
           Back to Home
         </Link>
@@ -48,8 +47,7 @@ export default function NotFound() {
           href="https://calendly.com/book-strategycall-sigflow-wijdan"
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-ghost px-8 py-3 text-sm font-semibold"
-          style={{ display: 'inline-block', textDecoration: 'none' }}
+          className="btn-ghost px-8 py-3 text-sm font-semibold w-full sm:w-auto"
         >
           Book a Call
         </a>

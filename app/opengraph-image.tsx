@@ -1,11 +1,22 @@
 import { ImageResponse } from 'next/og'
 
+// Edge runtime: the Node.js renderer crashes on Windows ("Invalid URL") during `next build`
 export const runtime = 'edge'
-export const alt    = 'Sigflow GTM – Signal-Driven Go-To-Market'
-export const size   = { width: 1200, height: 630 }
+export const alt = 'Sigflow GTM – Signal-Driven Go-To-Market'
+export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
+// Note: every element with more than one child needs `display: flex`,
+// otherwise the image renderer fails and serves an empty (0-byte) image.
 export default async function Image() {
+  // Bundled with the route, so no filesystem access is needed at the edge
+  const [logo, inter400, inter800] = await Promise.all([
+    fetch(new URL('../public/logo-mark.png', import.meta.url)).then((r) => r.arrayBuffer()),
+    fetch(new URL('../assets/fonts/inter-400.woff', import.meta.url)).then((r) => r.arrayBuffer()),
+    fetch(new URL('../assets/fonts/inter-800.woff', import.meta.url)).then((r) => r.arrayBuffer()),
+  ])
+  const logoSrc = logo as unknown as string // the renderer accepts raw image bytes
+
   return new ImageResponse(
     (
       <div
@@ -14,89 +25,59 @@ export default async function Image() {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #080C14 0%, #0D1626 50%, #091220 100%)',
           padding: '80px 90px',
-          fontFamily: 'system-ui, sans-serif',
-          position: 'relative',
+          background: '#080C14',
+          backgroundImage:
+            'radial-gradient(circle at 78% 30%, rgba(59,130,246,0.28) 0%, transparent 45%), radial-gradient(circle at 10% 90%, rgba(6,182,212,0.16) 0%, transparent 40%)',
+          fontFamily: 'Inter',
         }}
       >
-        {/* Background glow */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'radial-gradient(ellipse 60% 60% at 70% 40%, rgba(59,130,246,0.18) 0%, transparent 65%)',
-        }} />
-
-        {/* Logo mark */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 16, marginBottom: 40,
-        }}>
-          <div style={{
-            width: 52, height: 52, borderRadius: 14,
-            background: 'linear-gradient(135deg, #2563EB, #0891B2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 8px 24px rgba(59,130,246,0.4)',
-          }}>
-            <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
-              <circle cx="24" cy="68" r="7" fill="white"/>
-              <circle cx="50" cy="50" r="5.5" fill="rgba(255,255,255,0.7)"/>
-              <circle cx="76" cy="32" r="7" fill="white"/>
-              <path d="M24 68 Q37 59 50 50 Q63 41 76 32" stroke="white" strokeWidth="4" strokeLinecap="round" fill="none"/>
-              <path d="M76 32 L69 27 M76 32 L71 39" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-            </svg>
+        {/* Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 44 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} width={64} height={64} style={{ borderRadius: 14 }} alt="" />
+          <div style={{ display: 'flex', marginLeft: 18, fontSize: 34, fontWeight: 800 }}>
+            <span style={{ color: '#F8FAFC' }}>Sigflow</span>
+            <span style={{ color: '#3B82F6', marginLeft: 10 }}>GTM</span>
           </div>
-          <span style={{ fontSize: 28, fontWeight: 700, color: 'white' }}>
-            Sigflow <span style={{ color: '#3B82F6' }}>GTM</span>
-          </span>
         </div>
 
         {/* Headline */}
-        <div style={{
-          fontSize: 68, fontWeight: 800, lineHeight: 1.05,
-          color: '#F8FAFC', marginBottom: 28, maxWidth: 800,
-        }}>
-          Signal-Driven{' '}
-          <span style={{
-            background: 'linear-gradient(135deg, #3B82F6, #06B6D4)',
-            WebkitBackgroundClip: 'text',
-            color: '#3B82F6',
-          }}>
-            Go-To-Market.
-          </span>
+        <div style={{ display: 'flex', flexDirection: 'column', fontSize: 72, fontWeight: 800, lineHeight: 1.05, marginBottom: 28 }}>
+          <span style={{ color: '#F8FAFC' }}>Signal-Driven</span>
+          <span style={{ color: '#3B82F6' }}>Go-To-Market.</span>
         </div>
 
-        {/* Sub */}
-        <div style={{
-          fontSize: 26, color: '#94A3B8', lineHeight: 1.5,
-          maxWidth: 720, marginBottom: 52,
-        }}>
-          We build outbound systems using 40+ buying signals to fill your pipeline with qualified meetings.
+        <div style={{ display: 'flex', fontSize: 27, color: '#94A3B8', lineHeight: 1.45, maxWidth: 820 }}>
+          Outbound systems built on 40+ buying signals that fill your pipeline with qualified meetings.
         </div>
 
-        {/* Stats row */}
-        <div style={{ display: 'flex', gap: 48 }}>
+        {/* Stats */}
+        <div style={{ display: 'flex', marginTop: 48 }}>
           {[
-            { value: '40+', label: 'Buying Signals' },
-            { value: '3×',  label: 'Pipeline Growth' },
-            { value: '20-30d', label: 'To First Results' },
+            { value: '40+', label: 'Buying signals' },
+            { value: '3x', label: 'Pipeline growth' },
+            { value: '20-30d', label: 'To first results' },
           ].map((s) => (
-            <div key={s.label} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <span style={{ fontSize: 36, fontWeight: 800, color: '#3B82F6' }}>{s.value}</span>
-              <span style={{ fontSize: 16, color: '#64748B' }}>{s.label}</span>
+            <div key={s.label} style={{ display: 'flex', flexDirection: 'column', marginRight: 64 }}>
+              <span style={{ fontSize: 40, fontWeight: 800, color: '#06B6D4' }}>{s.value}</span>
+              <span style={{ fontSize: 20, color: '#64748B' }}>{s.label}</span>
             </div>
           ))}
         </div>
 
-        {/* URL badge */}
-        <div style={{
-          position: 'absolute', bottom: 48, right: 90,
-          fontSize: 18, color: '#334155',
-        }}>
+        <div style={{ display: 'flex', position: 'absolute', bottom: 48, right: 90, fontSize: 22, color: '#64748B' }}>
           sigflowgtm.com
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        { name: 'Inter', data: inter400, weight: 400, style: 'normal' },
+        { name: 'Inter', data: inter800, weight: 800, style: 'normal' },
+      ],
+    }
   )
 }

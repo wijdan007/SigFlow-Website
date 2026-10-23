@@ -55,7 +55,7 @@ export default function Footer() {
             <a href="/" className="flex items-center gap-2.5 mb-5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logo-blue.png"
+                src="/logo-mark.png"
                 alt="Sigflow GTM"
                 width={32}
                 height={32}
@@ -132,7 +132,7 @@ export default function Footer() {
               <p className="text-xs font-semibold uppercase tracking-widest mb-5" style={{ color: '#64748B' }}>
                 {sec.title}
               </p>
-              <ul className="flex flex-col gap-0 md:gap-3">
+              <ul className="flex flex-col gap-3">
                 {sec.links.map((link) => (
                   <li key={link.label}>
                     {link.external ? (

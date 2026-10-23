@@ -302,8 +302,7 @@ export default function CaseStudiesContent() {
             href="https://calendly.com/book-strategycall-sigflow-wijdan"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-glow text-sm px-8 py-3.5"
-            style={{ display: 'inline-block', textDecoration: 'none' }}
+            className="btn-glow text-sm px-8 py-3.5 w-full sm:w-auto"
           >
             Book a Free Strategy Call
           </a>

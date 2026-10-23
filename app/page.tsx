@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   description:
     'Sigflow GTM builds your outbound engine using 40+ buying signals. Cold email infrastructure, Clay-powered targeting, and full GTM systems that deliver qualified meetings in 20-30 days.',
   alternates: { canonical: 'https://sigflowgtm.com' },
+  openGraph: { url: 'https://sigflowgtm.com' },
 }
 
 export default function Home() {

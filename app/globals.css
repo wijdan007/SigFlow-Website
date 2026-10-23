@@ -56,41 +56,59 @@ body {
   border-radius: 2px;
 }
 
-/* Glow button */
-.btn-glow {
-  position: relative;
-  background: var(--accent-blue);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 14px 32px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.2);
-}
-.btn-glow:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.7), 0 0 60px rgba(59, 130, 246, 0.3);
-}
+/* Buttons live in the components layer so Tailwind utilities (px-*, text-*, w-full)
+   on each usage can override the defaults */
+@layer components {
+  .btn-glow,
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 8px;
+    padding: 14px 32px;
+    font-size: 16px;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+  }
 
-/* Ghost button */
-.btn-ghost {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1.5px solid rgba(248, 250, 252, 0.3);
-  border-radius: 8px;
-  padding: 14px 32px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, transform 0.2s;
-}
-.btn-ghost:hover {
-  border-color: rgba(248, 250, 252, 0.7);
-  background: rgba(248, 250, 252, 0.05);
-  transform: translateY(-2px);
+  .btn-glow {
+    position: relative;
+    background: var(--accent-blue);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.2);
+  }
+  .btn-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7), 0 0 60px rgba(59, 130, 246, 0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1.5px solid rgba(248, 250, 252, 0.3);
+    font-weight: 500;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover {
+    border-color: rgba(248, 250, 252, 0.7);
+    background: rgba(248, 250, 252, 0.05);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 640px) {
+    .btn-glow,
+    .btn-ghost {
+      padding: 12px 24px;
+      font-size: 15px;
+    }
+  }
 }
 
 /* Section label */
@@ -105,21 +123,6 @@ body {
 }
 
 
-/* Mobile button sizing */
-@media (max-width: 768px) {
-  .btn-glow, .btn-ghost {
-    padding: 12px 24px;
-    font-size: 15px;
-    width: 100%;
-    text-align: center;
-    display: block;
-  }
-  .btn-glow + .btn-ghost,
-  .btn-ghost + .btn-glow {
-    margin-top: 0;
-  }
-}
-
 /* Prevent horizontal overflow on all sections */
 section {
   max-width: 100vw;
@@ -130,11 +133,6 @@ section {
 @media (max-width: 480px) {
   h1 { font-size: clamp(2rem, 10vw, 4rem) !important; line-height: 1.1 !important; }
   h2 { font-size: clamp(1.75rem, 8vw, 3rem) !important; }
-}
-
-/* Touch-friendly tap targets */
-@media (max-width: 768px) {
-  a, button { min-height: 44px; }
 }
 
 /* Reduce motion */

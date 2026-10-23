@@ -58,7 +58,7 @@ export default function BookACall() {
               href="https://calendly.com/book-strategycall-sigflow-wijdan"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-glow text-lg px-10 py-4 inline-block"
+              className="btn-glow text-lg px-10 py-4 w-full sm:w-auto"
               data-magnetic
               style={{ fontSize: '18px' }}
             >
